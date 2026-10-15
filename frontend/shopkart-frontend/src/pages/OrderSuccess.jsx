@@ -44,11 +44,11 @@ export default function OrderSuccess() {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-[#080D18] text-[#EAF2FF] flex flex-col">
+            <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col">
                 <Navbar />
                 <div className="flex-1 flex flex-col items-center justify-center py-20">
-                    <div className="w-12 h-12 border-4 border-[#1E2D4A] border-t-[#3B82F6] rounded-full animate-spin mb-4"></div>
-                    <p className="text-[#94A3B8] text-sm">Verifying order confirmation...</p>
+                    <div className="w-8 h-8 border-2 border-slate-200 border-t-emerald-600 rounded-full animate-spin mb-3"></div>
+                    <p className="text-slate-500 text-xs">Confirming your order...</p>
                 </div>
             </div>
         );
@@ -56,17 +56,14 @@ export default function OrderSuccess() {
 
     if (error || !order) {
         return (
-            <div className="min-h-screen bg-[#080D18] text-[#EAF2FF] flex flex-col">
+            <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col">
                 <Navbar />
-                <main className="max-w-md mx-auto px-6 py-20 text-center flex-1">
-                    <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center text-rose-400 text-3xl">
-                        ⚠️
-                    </div>
-                    <h1 className="text-2xl font-bold text-[#EAF2FF] mb-2">Unable to load order</h1>
-                    <p className="text-[#94A3B8] mb-6">{error || "Order not found"}</p>
+                <main className="max-w-md mx-auto px-6 py-16 text-center flex-1">
+                    <h1 className="text-xl font-bold text-slate-900 mb-2">Unable to load order</h1>
+                    <p className="text-slate-500 text-xs mb-5">{error || "Order not found"}</p>
                     <Link
                         to="/orders"
-                        className="inline-flex items-center gap-2 bg-[#3B82F6] text-white px-6 py-2.5 rounded-xl font-semibold hover:bg-[#2563EB] shadow-lg shadow-blue-500/20 transition-all cursor-pointer"
+                        className="inline-flex items-center gap-2 bg-slate-900 hover:bg-emerald-600 text-white px-5 py-2 rounded-lg text-xs font-semibold transition"
                     >
                         Go to My Orders
                     </Link>
@@ -76,105 +73,95 @@ export default function OrderSuccess() {
     }
 
     return (
-        <div className="min-h-screen bg-[#080D18] text-[#EAF2FF] flex flex-col">
+        <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col">
             <Navbar />
 
-            <main className="max-w-3xl mx-auto px-4 sm:px-6 py-12 flex-1 w-full">
-                <div className="bg-[#111B2E] rounded-3xl border border-[#1E2D4A] p-6 sm:p-10 shadow-2xl text-center mb-8">
+            <main className="max-w-2xl mx-auto px-4 sm:px-6 py-10 flex-1 w-full">
+                <div className="bg-white rounded-2xl border border-slate-200/90 p-6 sm:p-8 shadow-xs text-center mb-6">
                     {/* Success Icon */}
-                    <div className="w-20 h-20 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-full flex items-center justify-center text-4xl mx-auto mb-5 shadow-lg shadow-emerald-500/10">
-                        <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7" />
-                        </svg>
+                    <div className="w-14 h-14 bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-full flex items-center justify-center text-2xl mx-auto mb-4 font-bold">
+                        ✓
                     </div>
 
-                    <h1 className="text-3xl font-extrabold text-[#EAF2FF] tracking-tight mb-2" id="order-success-title">
-                        Order Placed Successfully!
+                    <h1 className="text-2xl font-bold text-slate-900 tracking-tight mb-1" id="order-success-title">
+                        Order Confirmed
                     </h1>
-                    <p className="text-[#94A3B8] text-sm max-w-lg mx-auto mb-8">
-                        Thank you for shopping with ShopKart. Your payment has been verified and your order is confirmed.
+                    <p className="text-slate-500 text-xs max-w-sm mx-auto mb-6">
+                        Thank you for your order. Your Razorpay payment was verified successfully.
                     </p>
 
                     {/* Order Metadata Box */}
-                    <div className="bg-[#080D18] rounded-2xl p-5 sm:p-6 text-left border border-[#1E2D4A] grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+                    <div className="bg-slate-50/70 rounded-xl p-4 sm:p-5 text-left border border-slate-200 grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6 text-xs">
                         <div>
-                            <span className="text-xs text-[#94A3B8] uppercase tracking-wider block font-medium">Order ID</span>
-                            <span className="text-sm font-bold text-[#EAF2FF] font-mono break-all" id="confirmed-order-id">{order._id}</span>
+                            <span className="text-slate-400 uppercase tracking-wider block font-medium">Order ID</span>
+                            <span className="font-semibold text-slate-900 font-mono break-all" id="confirmed-order-id">{order._id}</span>
                         </div>
                         <div>
-                            <span className="text-xs text-[#94A3B8] uppercase tracking-wider block font-medium">Total Amount</span>
-                            <span className="text-lg font-black text-[#60A5FA]" id="confirmed-order-total">
+                            <span className="text-slate-400 uppercase tracking-wider block font-medium">Total Paid</span>
+                            <span className="text-base font-bold text-slate-900" id="confirmed-order-total">
                                 ₹{Number(order.totalAmount).toLocaleString("en-IN")}
                             </span>
                         </div>
                         <div>
-                            <span className="text-xs text-[#94A3B8] uppercase tracking-wider block font-medium">Payment Status</span>
-                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 mt-1">
-                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                            <span className="text-slate-400 uppercase tracking-wider block font-medium">Payment Status</span>
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200 mt-1">
                                 {order.paymentStatus}
                             </span>
                         </div>
                         <div>
-                            <span className="text-xs text-[#94A3B8] uppercase tracking-wider block font-medium">Order Status</span>
-                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-[#3B82F6]/10 text-[#60A5FA] border border-[#3B82F6]/20 mt-1" id="confirmed-order-status">
-                                <span className="w-1.5 h-1.5 rounded-full bg-[#60A5FA]"></span>
+                            <span className="text-slate-400 uppercase tracking-wider block font-medium">Order Status</span>
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-semibold bg-slate-100 text-slate-800 border border-slate-200 mt-1" id="confirmed-order-status">
                                 {order.status}
                             </span>
                         </div>
                         {order.razorpayPaymentId && (
-                            <div className="sm:col-span-2 pt-2 border-t border-[#1E2D4A]/50">
-                                <span className="text-xs text-[#94A3B8] uppercase tracking-wider block font-medium">
-                                    Razorpay Payment ID
+                            <div className="sm:col-span-2 pt-2 border-t border-slate-200/60">
+                                <span className="text-slate-400 uppercase tracking-wider block font-medium">
+                                    Payment Reference
                                 </span>
-                                <span className="text-xs font-mono text-[#60A5FA]">{order.razorpayPaymentId}</span>
+                                <span className="font-mono text-slate-700">{order.razorpayPaymentId}</span>
                             </div>
                         )}
                     </div>
 
                     {/* Shipping Address Box */}
-                    <div className="text-left bg-[#080D18]/70 border border-[#1E2D4A] rounded-2xl p-5 mb-8">
-                        <div className="flex items-center gap-2 mb-3">
-                            <svg className="w-4 h-4 text-[#60A5FA]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                            </svg>
-                            <h2 className="text-xs font-bold text-[#60A5FA] uppercase tracking-wider">
-                                Shipping Destination
-                            </h2>
-                        </div>
-                        <p className="text-sm font-semibold text-[#EAF2FF]">{order.shippingAddress?.fullName}</p>
-                        <p className="text-sm text-[#94A3B8] mt-0.5">{order.shippingAddress?.addressLine1}</p>
-                        <p className="text-sm text-[#94A3B8]">
+                    <div className="text-left bg-slate-50/70 border border-slate-200 rounded-xl p-4 mb-6 text-xs">
+                        <h2 className="font-semibold text-slate-700 uppercase tracking-wider mb-2">
+                            Shipping Details
+                        </h2>
+                        <p className="font-semibold text-slate-900">{order.shippingAddress?.fullName}</p>
+                        <p className="text-slate-600 mt-0.5">{order.shippingAddress?.addressLine1}</p>
+                        <p className="text-slate-600">
                             {order.shippingAddress?.city}, {order.shippingAddress?.state} - {order.shippingAddress?.pincode}
                         </p>
-                        <p className="text-xs text-[#94A3B8] mt-2 font-mono">Contact: {order.shippingAddress?.phone}</p>
+                        <p className="text-slate-400 mt-1.5 font-mono">Phone: {order.shippingAddress?.phone}</p>
                     </div>
 
                     {/* Ordered Items Breakdown */}
-                    <div className="text-left border-t border-[#1E2D4A] pt-6 mb-8">
-                        <h2 className="text-base font-bold text-[#EAF2FF] mb-4">
-                            Ordered Items ({order.items?.length || 0})
+                    <div className="text-left border-t border-slate-100 pt-5 mb-6">
+                        <h2 className="text-xs font-bold text-slate-700 uppercase tracking-wider mb-3">
+                            Items ({order.items?.length || 0})
                         </h2>
-                        <div className="divide-y divide-[#1E2D4A]/60">
+                        <div className="divide-y divide-slate-100">
                             {order.items?.map((item, idx) => (
-                                <div key={idx} className="py-3.5 flex items-center justify-between">
-                                    <div className="flex items-center space-x-3.5">
+                                <div key={idx} className="py-2.5 flex items-center justify-between text-xs">
+                                    <div className="flex items-center space-x-3">
                                         <img
                                             src={item.image}
                                             alt={item.name}
-                                            className="w-12 h-12 rounded-xl object-cover bg-[#080D18] border border-[#1E2D4A] flex-shrink-0"
+                                            className="w-10 h-10 rounded-lg object-contain bg-slate-50 border border-slate-100 shrink-0"
                                             onError={(e) => {
                                                 e.currentTarget.src = "/images/products/placeholder.svg";
                                             }}
                                         />
                                         <div>
-                                            <p className="font-semibold text-[#EAF2FF] text-sm">{item.name}</p>
-                                            <p className="text-xs text-[#94A3B8]">
+                                            <p className="font-semibold text-slate-900">{item.name}</p>
+                                            <p className="text-slate-500">
                                                 Qty: {item.quantity} × ₹{Number(item.price).toLocaleString("en-IN")}
                                             </p>
                                         </div>
                                     </div>
-                                    <span className="font-bold text-[#EAF2FF] text-sm">
+                                    <span className="font-semibold text-slate-900">
                                         ₹{(Number(item.price) * item.quantity).toLocaleString("en-IN")}
                                     </span>
                                 </div>
@@ -183,17 +170,17 @@ export default function OrderSuccess() {
                     </div>
 
                     {/* Action Buttons */}
-                    <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5">
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                         <Link
                             to="/orders"
-                            className="w-full sm:w-auto bg-[#3B82F6] hover:bg-[#2563EB] text-white px-7 py-3 rounded-xl font-bold text-sm shadow-lg shadow-blue-500/20 transition-all cursor-pointer"
+                            className="w-full sm:w-auto bg-slate-900 hover:bg-emerald-600 text-white px-6 py-2.5 rounded-lg font-semibold text-xs transition cursor-pointer"
                             id="view-my-orders-btn"
                         >
-                            View My Orders
+                            View Order History
                         </Link>
                         <Link
                             to="/products"
-                            className="w-full sm:w-auto bg-[#080D18] hover:bg-[#1E2D4A] text-[#EAF2FF] border border-[#1E2D4A] px-7 py-3 rounded-xl font-bold text-sm transition-all cursor-pointer"
+                            className="w-full sm:w-auto bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 px-6 py-2.5 rounded-lg font-semibold text-xs transition cursor-pointer"
                             id="continue-shopping-btn"
                         >
                             Continue Shopping

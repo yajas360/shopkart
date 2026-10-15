@@ -35,9 +35,9 @@ export default function ProductCard({ product, isWishlisted: initialIsWishlisted
             window.dispatchEvent(new CustomEvent("shopkart:wishlist_change"));
         } catch (err) {
             console.error("Wishlist operation error:", err);
-            const msg = err.response?.data?.message || "Unable to save product. Please try again.";
+            const msg = err.response?.data?.message || "Unable to save product.";
             setErrorMessage(msg);
-            setTimeout(() => setErrorMessage(""), 3500);
+            setTimeout(() => setErrorMessage(""), 3000);
         } finally {
             setLoading(false);
         }
@@ -50,12 +50,12 @@ export default function ProductCard({ product, isWishlisted: initialIsWishlisted
 
         const res = await addToCart(product._id);
         if (res.success) {
-            setCartFeedback("Added to cart! 🛒");
+            setCartFeedback("Added to cart");
         } else {
             setCartFeedback(res.message);
         }
         setCartLoading(false);
-        setTimeout(() => setCartFeedback(""), 3000);
+        setTimeout(() => setCartFeedback(""), 2500);
     };
 
     const handleIncrease = async () => {
@@ -66,7 +66,7 @@ export default function ProductCard({ product, isWishlisted: initialIsWishlisted
         const res = await updateQuantity(product._id, quantityInCart + 1);
         if (!res.success) {
             setCartFeedback(res.message);
-            setTimeout(() => setCartFeedback(""), 3000);
+            setTimeout(() => setCartFeedback(""), 2500);
         }
         setCartLoading(false);
     };
@@ -80,26 +80,26 @@ export default function ProductCard({ product, isWishlisted: initialIsWishlisted
             const res = await removeFromCart(product._id);
             if (!res.success) {
                 setCartFeedback(res.message);
-                setTimeout(() => setCartFeedback(""), 3000);
+                setTimeout(() => setCartFeedback(""), 2500);
             }
         } else {
             const res = await updateQuantity(product._id, quantityInCart - 1);
             if (!res.success) {
                 setCartFeedback(res.message);
-                setTimeout(() => setCartFeedback(""), 3000);
+                setTimeout(() => setCartFeedback(""), 2500);
             }
         }
         setCartLoading(false);
     };
 
     return (
-        <div className="bg-[#111B2E] rounded-2xl border border-[#1E2D4A] overflow-hidden shadow-lg shadow-black/30 hover:border-[#3B82F6]/60 hover:shadow-xl hover:shadow-[#3B82F6]/10 transition-all duration-300 flex flex-col justify-between group">
+        <div className="bg-white rounded-xl border border-slate-200/90 overflow-hidden shadow-xs hover:shadow-md hover:border-slate-300 transition-all duration-200 flex flex-col justify-between group">
             <div>
-                <div className="relative overflow-hidden bg-[#080D18]">
+                <div className="relative bg-slate-50 overflow-hidden aspect-4/3 flex items-center justify-center p-3">
                     <img
                         src={product.image}
                         alt={product.name}
-                        className="w-full h-56 object-cover bg-[#080D18] group-hover:scale-105 transition-transform duration-500"
+                        className="w-full h-full object-contain mix-blend-multiply group-hover:scale-102 transition-transform duration-300"
                         onError={(e) => {
                             e.currentTarget.src = "/images/products/placeholder.svg";
                         }}
@@ -107,55 +107,54 @@ export default function ProductCard({ product, isWishlisted: initialIsWishlisted
                     <button
                         onClick={handleWishlistClick}
                         disabled={loading}
-                        title={isWishlisted ? "Remove from Wishlist" : "Add to Wishlist"}
-                        className={`absolute top-3 right-3 p-2 rounded-xl backdrop-blur-md transition cursor-pointer shadow-md ${
+                        title={isWishlisted ? "Remove from Wishlist" : "Save to Wishlist"}
+                        className={`absolute top-2.5 right-2.5 p-2 rounded-lg transition cursor-pointer shadow-xs ${
                             isWishlisted
-                                ? "bg-rose-500/20 text-rose-400 border border-rose-500/40"
-                                : "bg-[#111B2E]/80 text-[#94A3B8] hover:text-rose-400 border border-[#1E2D4A] hover:bg-[#111B2E]"
+                                ? "bg-red-50 text-red-600 border border-red-200"
+                                : "bg-white/90 text-slate-400 hover:text-red-500 border border-slate-200 hover:bg-white"
                         }`}
                     >
-                        {loading ? "⏳" : isWishlisted ? "❤️" : "🤍"}
+                        <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                        </svg>
                     </button>
                 </div>
 
-                <div className="p-5">
-                    <span className="text-[11px] font-bold text-[#60A5FA] uppercase tracking-wider bg-[#3B82F6]/10 border border-[#3B82F6]/20 px-2.5 py-0.5 rounded-full inline-block mb-2">
-                        {product.category}
-                    </span>
-
-                    <h2 className="text-lg font-bold text-[#EAF2FF] mb-2 line-clamp-1 group-hover:text-[#60A5FA] transition-colors">
-                        {product.name}
-                    </h2>
-
-                    <div className="flex items-baseline justify-between mb-3">
-                        <p className="text-2xl font-black text-[#EAF2FF]">
-                            ₹{Number(product.price).toLocaleString("en-IN")}
-                        </p>
-
-                        <p
-                            className={`text-xs font-semibold px-2 py-0.5 rounded-full ${
+                <div className="p-4 sm:p-5">
+                    <div className="flex items-center justify-between mb-2">
+                        <span className="text-[11px] font-semibold text-emerald-800 bg-emerald-50 border border-emerald-200/60 px-2 py-0.5 rounded">
+                            {product.category}
+                        </span>
+                        <span
+                            className={`text-[11px] font-medium px-2 py-0.5 rounded ${
                                 product.stock > 0
-                                    ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
-                                    : "bg-rose-500/10 text-rose-400 border border-rose-500/20"
+                                    ? "text-emerald-700 bg-emerald-50"
+                                    : "text-red-700 bg-red-50"
                             }`}
                         >
-                            {product.stock > 0
-                                ? `${product.stock} in stock`
-                                : "Out of stock"}
-                        </p>
+                            {product.stock > 0 ? `${product.stock} in stock` : "Out of stock"}
+                        </span>
                     </div>
+
+                    <h3 className="text-base font-semibold text-slate-900 mb-1.5 line-clamp-1 group-hover:text-emerald-700 transition-colors">
+                        {product.name}
+                    </h3>
+
+                    <p className="text-lg font-bold text-slate-900">
+                        ₹{Number(product.price).toLocaleString("en-IN")}
+                    </p>
                 </div>
             </div>
 
-            <div className="px-5 pb-5 space-y-2.5">
+            <div className="px-4 pb-4 sm:px-5 sm:pb-5 space-y-2">
                 {errorMessage && (
-                    <p className="text-xs text-rose-400 font-medium text-center bg-rose-500/10 border border-rose-500/20 py-1 rounded-lg">
+                    <p className="text-xs text-red-600 bg-red-50 border border-red-200 py-1 px-2 rounded text-center">
                         {errorMessage}
                     </p>
                 )}
 
                 {cartFeedback && (
-                    <p className="text-xs text-[#60A5FA] font-semibold text-center bg-[#3B82F6]/10 border border-[#3B82F6]/25 py-1 rounded-lg">
+                    <p className="text-xs text-emerald-700 bg-emerald-50 border border-emerald-200 py-1 px-2 rounded text-center font-medium">
                         {cartFeedback}
                     </p>
                 )}
@@ -163,61 +162,44 @@ export default function ProductCard({ product, isWishlisted: initialIsWishlisted
                 <div className="grid grid-cols-2 gap-2">
                     <Link
                         to={`/products/${product._id}`}
-                        className="block text-center bg-[#1E2D4A] text-[#EAF2FF] py-2 rounded-xl font-medium text-xs sm:text-sm hover:bg-[#2A3C61] hover:text-[#60A5FA] transition border border-[#1E2D4A]"
+                        className="text-center bg-slate-100 hover:bg-slate-200 text-slate-800 py-2 rounded-lg font-medium text-xs transition"
                     >
-                        View Details
+                        Details
                     </Link>
 
                     <button
                         onClick={handleWishlistClick}
                         disabled={loading}
-                        className={`w-full py-2 px-1 rounded-xl font-medium text-xs transition flex items-center justify-center space-x-1 cursor-pointer ${
-                            loading
-                                ? "bg-[#1E2D4A] text-[#94A3B8] opacity-50 cursor-not-allowed"
-                                : isWishlisted
-                                ? "bg-rose-500/15 text-rose-300 border border-rose-500/30 hover:bg-rose-500/25"
-                                : "bg-[#1E2D4A] text-[#94A3B8] hover:text-[#EAF2FF] hover:bg-[#2A3C61] border border-[#1E2D4A]"
+                        className={`py-2 px-1 rounded-lg font-medium text-xs transition border cursor-pointer ${
+                            isWishlisted
+                                ? "bg-red-50 text-red-700 border-red-200 hover:bg-red-100"
+                                : "bg-white text-slate-700 border-slate-200 hover:bg-slate-50"
                         }`}
                     >
-                        {loading ? (
-                            <span>⏳ Saving...</span>
-                        ) : isWishlisted ? (
-                            <span>❤️ Saved</span>
-                        ) : (
-                            <span>🤍 Wishlist</span>
-                        )}
+                        {loading ? "Saving..." : isWishlisted ? "Saved" : "Save"}
                     </button>
                 </div>
 
                 {inCart ? (
-                    <div className="w-full flex items-center justify-between bg-[#080D18] border border-[#1E2D4A] rounded-xl p-1">
+                    <div className="flex items-center justify-between bg-slate-50 border border-slate-200 rounded-lg p-1">
                         <button
                             type="button"
                             onClick={handleDecrease}
                             disabled={cartLoading}
-                            title={quantityInCart === 1 ? "Remove from cart" : "Decrease quantity"}
-                            className="w-8 h-8 rounded-lg bg-[#1E2D4A] text-[#60A5FA] font-bold hover:bg-[#3B82F6] hover:text-white flex items-center justify-center disabled:opacity-30 cursor-pointer transition"
+                            className="w-7 h-7 rounded bg-white text-slate-700 hover:bg-slate-200 font-bold border border-slate-200 flex items-center justify-center transition disabled:opacity-40 cursor-pointer"
                         >
                             -
                         </button>
 
-                        <div className="flex items-center space-x-1.5 text-xs text-[#94A3B8] font-bold">
-                            <span>In Cart:</span>
-                            <span className="bg-[#1E2D4A] text-[#EAF2FF] px-2 py-0.5 rounded font-black text-sm">
-                                {quantityInCart}
-                            </span>
+                        <div className="text-xs font-semibold text-slate-700">
+                            Qty: <span className="text-slate-900 font-bold">{quantityInCart}</span>
                         </div>
 
                         <button
                             type="button"
                             onClick={handleIncrease}
                             disabled={cartLoading || quantityInCart >= product.stock}
-                            title={
-                                quantityInCart >= product.stock
-                                    ? `Max stock (${product.stock}) reached`
-                                    : "Increase quantity"
-                            }
-                            className="w-8 h-8 rounded-lg bg-[#1E2D4A] text-[#60A5FA] font-bold hover:bg-[#3B82F6] hover:text-white flex items-center justify-center disabled:opacity-30 cursor-pointer transition"
+                            className="w-7 h-7 rounded bg-white text-slate-700 hover:bg-slate-200 font-bold border border-slate-200 flex items-center justify-center transition disabled:opacity-40 cursor-pointer"
                         >
                             +
                         </button>
@@ -226,15 +208,9 @@ export default function ProductCard({ product, isWishlisted: initialIsWishlisted
                     <button
                         onClick={handleAddToCart}
                         disabled={cartLoading || product.stock <= 0}
-                        className="w-full py-2.5 rounded-xl font-bold text-sm transition flex items-center justify-center space-x-1.5 bg-[#3B82F6] hover:bg-[#2563EB] text-[#EAF2FF] shadow-lg shadow-[#3B82F6]/25 hover:shadow-[#3B82F6]/40 disabled:opacity-40 cursor-pointer"
+                        className="w-full py-2.5 rounded-lg font-semibold text-xs sm:text-sm transition bg-slate-900 hover:bg-emerald-600 text-white disabled:opacity-40 disabled:hover:bg-slate-900 cursor-pointer shadow-xs"
                     >
-                        {cartLoading ? (
-                            <span>⏳ Adding...</span>
-                        ) : product.stock <= 0 ? (
-                            <span>Out of Stock</span>
-                        ) : (
-                            <span>🛒 Add to Cart</span>
-                        )}
+                        {cartLoading ? "Adding..." : product.stock <= 0 ? "Out of Stock" : "Add to Cart"}
                     </button>
                 )}
             </div>

@@ -33,7 +33,7 @@ export default function Products() {
                     } else {
                         setError(
                             productsData.reason?.response?.data?.message ||
-                            "Something went wrong while loading products."
+                            "Failed to load products."
                         );
                     }
 
@@ -45,7 +45,7 @@ export default function Products() {
             } catch (err) {
                 if (!cancelled) {
                     setProducts([]);
-                    setError("Something went wrong while loading products.");
+                    setError("Failed to load products.");
                 }
             } finally {
                 if (!cancelled) {
@@ -69,23 +69,23 @@ export default function Products() {
     };
 
     return (
-        <div className="min-h-screen bg-[#080D18] text-[#EAF2FF]">
+        <div className="min-h-screen bg-slate-50 text-slate-900">
             <Navbar />
 
             <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-10">
-                <div className="mb-8">
+                <div className="mb-6">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                         <div>
-                            <h1 className="text-3xl sm:text-4xl font-extrabold text-[#EAF2FF] tracking-tight">
-                                Explore Products
+                            <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
+                                Products
                             </h1>
-                            <p className="text-[#94A3B8] text-sm sm:text-base mt-1.5">
-                                Discover premium electronics, fashion, and home essentials.
+                            <p className="text-slate-500 text-sm mt-1">
+                                Curated electronics, apparel, and lifestyle goods.
                             </p>
                         </div>
                         {products.length > 0 && (
-                            <span className="self-start sm:self-auto text-xs font-semibold px-3 py-1 rounded-full bg-[#111B2E] text-[#60A5FA] border border-[#1E2D4A]">
-                                {products.length} {products.length === 1 ? 'Product' : 'Products'} Available
+                            <span className="self-start sm:self-auto text-xs font-semibold px-3 py-1 rounded-full bg-white text-slate-700 border border-slate-200 shadow-xs">
+                                {products.length} {products.length === 1 ? 'item' : 'items'}
                             </span>
                         )}
                     </div>
@@ -101,43 +101,38 @@ export default function Products() {
                 />
 
                 {loading && (
-                    <div className="text-center py-20 bg-[#111B2E]/50 rounded-2xl border border-[#1E2D4A]">
-                        <div className="w-12 h-12 border-4 border-[#1E2D4A] border-t-[#3B82F6] rounded-full animate-spin mx-auto mb-4" />
-                        <p className="text-[#EAF2FF] font-semibold">Loading products...</p>
-                        <p className="text-[#94A3B8] text-xs mt-1">Fetching latest inventory from server</p>
+                    <div className="text-center py-20 bg-white rounded-xl border border-slate-200/90 shadow-xs">
+                        <div className="w-8 h-8 border-2 border-slate-200 border-t-emerald-600 rounded-full animate-spin mx-auto mb-3" />
+                        <p className="text-slate-700 font-medium text-sm">Loading items...</p>
                     </div>
                 )}
 
                 {!loading && error && (
-                    <div className="text-center py-16 bg-[#111B2E] rounded-2xl border border-rose-500/30 p-8">
-                        <div className="text-3xl mb-2">⚠️</div>
-                        <p className="text-rose-400 font-semibold mb-2">
-                            {error}
-                        </p>
-                        <p className="text-[#94A3B8] text-sm">Please refresh the page or try again shortly.</p>
+                    <div className="text-center py-16 bg-white rounded-xl border border-red-200 p-8 shadow-xs">
+                        <p className="text-red-600 font-semibold mb-2 text-sm">{error}</p>
+                        <p className="text-slate-500 text-xs">Please refresh or try again shortly.</p>
                     </div>
                 )}
 
                 {!loading && !error && products.length === 0 && (
-                    <div className="text-center py-20 bg-[#111B2E] rounded-2xl border border-[#1E2D4A] p-8">
-                        <div className="text-4xl mb-3">🔍</div>
-                        <h3 className="text-xl font-bold text-[#EAF2FF] mb-2">No products found</h3>
-                        <p className="text-[#94A3B8] text-sm max-w-md mx-auto mb-6">
-                            We couldn't find any products matching your filters. Try clearing your search or switching categories.
+                    <div className="text-center py-16 bg-white rounded-xl border border-slate-200/90 p-8 shadow-xs">
+                        <h3 className="text-base font-semibold text-slate-900 mb-1">No products found</h3>
+                        <p className="text-slate-500 text-xs max-w-sm mx-auto mb-5">
+                            We couldn't find items matching your search or filters.
                         </p>
                         {(search || category) && (
                             <button
                                 onClick={() => { setSearch(''); setCategory(''); }}
-                                className="px-5 py-2.5 rounded-xl bg-[#3B82F6] hover:bg-[#2563EB] text-[#EAF2FF] text-sm font-semibold transition cursor-pointer"
+                                className="px-4 py-2 rounded-lg bg-slate-900 hover:bg-emerald-600 text-white text-xs font-medium transition cursor-pointer"
                             >
-                                Reset Filters
+                                Clear filters
                             </button>
                         )}
                     </div>
                 )}
 
                 {!loading && !error && products.length > 0 && (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
                         {products.map((product) => (
                             <ProductCard
                                 key={product._id}

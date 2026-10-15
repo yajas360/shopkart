@@ -52,88 +52,77 @@ export default function WishlistCard({ product, onRemove }) {
     };
 
     return (
-        <div className="bg-[#111B2E] rounded-2xl border border-[#1E2D4A] overflow-hidden shadow-lg shadow-black/30 hover:border-[#3B82F6]/60 transition-all duration-300 flex flex-col justify-between group">
+        <div className="bg-white rounded-xl border border-slate-200/90 overflow-hidden shadow-xs hover:shadow-md hover:border-slate-300 transition-all duration-200 flex flex-col justify-between group">
             <div>
-                <div className="relative overflow-hidden bg-[#080D18]">
+                <div className="relative bg-slate-50 aspect-4/3 flex items-center justify-center p-3">
                     <img
                         src={product.image}
                         alt={product.name}
-                        className="w-full h-56 object-cover bg-[#080D18] group-hover:scale-105 transition-transform duration-500"
+                        className="w-full h-full object-contain mix-blend-multiply group-hover:scale-102 transition-transform duration-300"
                         onError={(e) => {
                             e.currentTarget.src = "/images/products/placeholder.svg";
                         }}
                     />
                 </div>
 
-                <div className="p-5">
-                    <span className="text-[11px] font-bold text-[#60A5FA] uppercase tracking-wider bg-[#3B82F6]/10 border border-[#3B82F6]/20 px-2.5 py-0.5 rounded-full inline-block mb-2">
-                        {product.category}
-                    </span>
-
-                    <h2 className="text-lg font-bold text-[#EAF2FF] mb-2 line-clamp-1 group-hover:text-[#60A5FA] transition-colors">
-                        {product.name}
-                    </h2>
-
-                    <div className="flex items-baseline justify-between mb-2">
-                        <p className="text-2xl font-black text-[#EAF2FF]">
-                            ₹{Number(product.price).toLocaleString("en-IN")}
-                        </p>
-
-                        <p
-                            className={`text-xs font-semibold px-2 py-0.5 rounded-full ${
+                <div className="p-4 sm:p-5">
+                    <div className="flex items-center justify-between mb-2">
+                        <span className="text-[11px] font-semibold text-emerald-800 bg-emerald-50 border border-emerald-200/60 px-2 py-0.5 rounded">
+                            {product.category}
+                        </span>
+                        <span
+                            className={`text-[11px] font-medium px-2 py-0.5 rounded ${
                                 product.stock > 0
-                                    ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
-                                    : "bg-rose-500/10 text-rose-400 border border-rose-500/20"
+                                    ? "text-emerald-700 bg-emerald-50"
+                                    : "text-red-700 bg-red-50"
                             }`}
                         >
-                            {product.stock > 0
-                                ? `${product.stock} left`
-                                : "Out of stock"}
-                        </p>
+                            {product.stock > 0 ? `${product.stock} in stock` : "Out of stock"}
+                        </span>
                     </div>
+
+                    <h3 className="text-base font-semibold text-slate-900 mb-1.5 line-clamp-1 group-hover:text-emerald-700 transition-colors">
+                        {product.name}
+                    </h3>
+
+                    <p className="text-lg font-bold text-slate-900">
+                        ₹{Number(product.price).toLocaleString("en-IN")}
+                    </p>
                 </div>
             </div>
 
-            <div className="px-5 pb-5 space-y-2">
+            <div className="px-4 pb-4 sm:px-5 sm:pb-5 space-y-2">
                 {error && (
-                    <p className="text-xs text-rose-400 font-medium text-center bg-rose-500/10 border border-rose-500/20 py-1 rounded-lg">
+                    <p className="text-xs text-red-600 bg-red-50 border border-red-200 py-1 px-2 rounded text-center">
                         {error}
                     </p>
                 )}
 
-                <div className="flex flex-col space-y-2">
+                <div className="flex flex-col space-y-1.5">
                     <button
                         onClick={handleMoveToCart}
                         disabled={movingToCart || product.stock <= 0}
-                        className="w-full bg-[#3B82F6] hover:bg-[#2563EB] text-[#EAF2FF] py-2.5 rounded-xl font-bold text-sm shadow-lg shadow-[#3B82F6]/25 hover:shadow-[#3B82F6]/40 transition flex items-center justify-center space-x-1.5 cursor-pointer disabled:opacity-40"
+                        className="w-full bg-slate-900 hover:bg-emerald-600 text-white py-2 rounded-lg font-semibold text-xs transition-colors cursor-pointer disabled:opacity-40"
                     >
-                        {movingToCart ? (
-                            <span>Moving to Cart...</span>
-                        ) : product.stock <= 0 ? (
-                            <span>Out of Stock</span>
-                        ) : (
-                            <span>Move to Cart 🛒</span>
-                        )}
+                        {movingToCart ? "Moving..." : product.stock <= 0 ? "Out of Stock" : "Move to Cart"}
                     </button>
 
-                    <Link
-                        to={`/products/${product._id}`}
-                        className="block text-center bg-[#1E2D4A] text-[#EAF2FF] hover:bg-[#2A3C61] hover:text-[#60A5FA] py-2 rounded-xl font-medium text-sm transition border border-[#1E2D4A]"
-                    >
-                        View Details
-                    </Link>
+                    <div className="grid grid-cols-2 gap-1.5">
+                        <Link
+                            to={`/products/${product._id}`}
+                            className="text-center bg-slate-100 hover:bg-slate-200 text-slate-800 py-1.5 rounded-lg font-medium text-xs transition"
+                        >
+                            Details
+                        </Link>
 
-                    <button
-                        onClick={handleRemove}
-                        disabled={removing}
-                        className="w-full bg-rose-500/10 text-rose-300 hover:bg-rose-500/20 border border-rose-500/25 py-2 rounded-xl font-medium text-xs sm:text-sm transition flex items-center justify-center space-x-1 cursor-pointer disabled:opacity-40"
-                    >
-                        {removing ? (
-                            <span>Removing...</span>
-                        ) : (
-                            <span>Remove from Wishlist</span>
-                        )}
-                    </button>
+                        <button
+                            onClick={handleRemove}
+                            disabled={removing}
+                            className="bg-white hover:bg-red-50 text-slate-500 hover:text-red-600 border border-slate-200 py-1.5 rounded-lg font-medium text-xs transition cursor-pointer disabled:opacity-40"
+                        >
+                            {removing ? "Removing..." : "Remove"}
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
