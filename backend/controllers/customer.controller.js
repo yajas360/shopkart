@@ -2,9 +2,12 @@ import Customer from "../models/customer.model.js";
 import bcrypt from "bcrypt";
 import genToken from "../utils/genToken.js";
 
+const isProduction = process.env.NODE_ENV === "production" || !process.env.PORT || process.env.RENDER;
+
 const cookieOptions = {
     httpOnly: true,
-    sameSite: "lax",
+    sameSite: isProduction ? "none" : "lax",
+    secure: isProduction ? true : false,
     maxAge: 7 * 24 * 60 * 60 * 1000
 };
 
@@ -53,6 +56,7 @@ export const registerCustomer = async (req, res) => {
         res.status(201).json({
             success: true,
             message: "Customer registered successfully",
+            token,
             customer: {
                 _id: newCustomer._id,
                 fullName: newCustomer.fullName,
@@ -112,6 +116,7 @@ export const loginCustomer = async (req, res) => {
         res.status(200).json({
             success: true,
             message: "Login successful",
+            token,
             customer: {
                 _id: customer._id,
                 fullName: customer.fullName,

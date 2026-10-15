@@ -20,10 +20,13 @@ export default function Login() {
 
     try {
       setLoading(true);
-      await api.post('/customers/login', {
+      const res = await api.post('/customers/login', {
         email: formData.email.trim(),
         password: formData.password
       });
+      if (res.data?.token) {
+        localStorage.setItem('shopkart_token', res.data.token);
+      }
       await checkAuth();
       navigate('/home');
     } catch (err) {

@@ -42,7 +42,10 @@ export default function Register() {
 
     try {
       setLoading(true);
-      await api.post('/customers/register', cleanData);
+      const res = await api.post('/customers/register', cleanData);
+      if (res.data?.token) {
+        localStorage.setItem('shopkart_token', res.data.token);
+      }
       await checkAuth();
       navigate('/home');
     } catch (err) {
