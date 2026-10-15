@@ -1,0 +1,9 @@
+{
+  "name": "shopkart-root",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "node backend/index.js",
+    "build": "npm --prefix backend install"
+  }
+}
