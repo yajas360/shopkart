@@ -1,0 +1,12 @@
+/* Glow and effect utilities for ShopKart dark theme */
+.glow-primary {
+  box-shadow: 0 0 20px -5px rgba(59, 130, 246, 0.4);
+}
+
+.glow-primary-hover:hover {
+  box-shadow: 0 0 25px -3px rgba(59, 130, 246, 0.55);
+}
+
+.glow-card:hover {
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.6), 0 0 15px -3px rgba(59, 130, 246, 0.15);
+}
