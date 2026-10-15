@@ -69,3 +69,5 @@ mongoose
   .catch((error) => {
     console.log("MongoDB connection failed:", error);
   });
+
+export default app;
